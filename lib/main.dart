@@ -8,7 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:provider/provider.dart';
 import 'providers/AppData.dart';
-//import 'screens/mainScreen.dart';
+import 'screens/pick-up screen.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,9 +44,10 @@ class MyApp extends StatelessWidget {
           MainScreen.id: (ctx) => MainScreen(),
           // WelcomeScreen.id: (ctx) => WelcomeScreen(),
 
-          '/': (ctx) => WelcomeScreen()
+          // '/': (ctx) => WelcomeScreen()
         },
         initialRoute: MainScreen.id,
+        // home: PickUpScreen(),
         // home: StreamBuilder(
         //   stream: _auth.userChanges(),
         //   builder: (context, snapshot) {

@@ -32,13 +32,20 @@ dependencies:
   firebase_auth: ^0.20.0+1
   firebase_database: ^6.0.0
   fluttertoast: ^7.1.8
-  google_maps_flutter: ^1.2.0
+  google_maps_flutter: 
   sliding_up_panel: ^1.0.2
   geolocator: ^6.2.1
   geocoder: ^0.2.1
   http: ^0.12.2
   provider: ^4.3.3
 
+  flutter_google_places: ^0.2.8
+  google_maps_webservice: ^0.0.16
+  
+  search_map_place: ^0.3.0
+ 
+  
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
