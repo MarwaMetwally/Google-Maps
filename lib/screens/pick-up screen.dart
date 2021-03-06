@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'package:uber/models/address.dart';
 import 'package:uber/models/place.dart';
 //import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,9 @@ import 'dart:async';
 //import 'package:google_maps_webservice/geolocation.dart';
 
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:search_map_place/search_map_place.dart';
+//import 'package:search_map_place/search_map_place.dart';
+
+String mapKey = "AIzaSyCyt_eysLh70lE25053JEzJaTYsvrQGfRE";
 
 class PickUpScreen extends StatefulWidget {
   @override
@@ -25,7 +29,6 @@ class _PickUpScreenState extends State<PickUpScreen> {
   List<PlacePrediction> placeData = [];
   TextEditingController dropOff = TextEditingController();
   GoogleMapController mapController;
-  String mapKey = "AIzaSyCyt_eysLh70lE25053JEzJaTYsvrQGfRE";
 
   Future<void> findPlace(String placeName, BuildContext context) async {
     if (placeName.length > 1) {
@@ -42,9 +45,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
           var placeList = (prediction as List)
               .map((e) => PlacePrediction.fromJson(e))
               .toList();
-
           setState(() {});
-
           placeData = placeList;
         }
       }
@@ -115,37 +116,83 @@ class _PickUpScreenState extends State<PickUpScreen> {
 class PredictionTile extends StatelessWidget {
   final PlacePrediction placePrediction;
   PredictionTile(this.placePrediction);
+
+  void getPlaceDetails(String placeId, BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.black,
+          child: Container(
+            color: Colors.white,
+            child: Row(
+              children: [
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                ),
+                Text('please wait ..')
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    String url =
+        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$mapKey";
+    final res = await http.get(url);
+    Navigator.pop(context);
+    String data = res.body;
+    var decodedData = json.decode(data);
+    if (decodedData["status"] == "OK") {
+      AddressData addressData = AddressData();
+      addressData.placeName = decodedData["result"]["name"];
+      addressData.placeID = placeId;
+      addressData.lat = decodedData["result"]["geometry"]["location"]["lat"];
+      addressData.long = decodedData["result"]["geometry"]["location"]["lng"];
+      Provider.of<AppData>(context, listen: false)
+          .updateDropoffLocation(addressData);
+      print('detailssssssssssss');
+      print(addressData.placeName);
+      Navigator.pop(context, "from search screen");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        child: SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              Icon(Icons.add_location, color: Colors.white),
-              SizedBox(
-                width: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    placePrediction.maintext,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(
-                    height: 3,
-                  ),
-                  Text(
-                    placePrediction.secondarytext,
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                ],
-              )
-            ],
+      child: InkWell(
+        onTap: () {
+          getPlaceDetails(placePrediction.placeid, context);
+        },
+        child: Container(
+          child: SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                Icon(Icons.add_location, color: Colors.white),
+                SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      placePrediction.maintext,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      placePrediction.secondarytext,
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

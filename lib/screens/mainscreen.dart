@@ -8,6 +8,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:uber/models/address.dart';
 import 'package:uber/providers/AppData.dart';
 import 'pick-up screen.dart';
+import 'package:uber/services/assisant.dart';
 
 class MainScreen extends StatefulWidget {
   static const String id = 'main';
@@ -56,9 +57,27 @@ class _MainScreenState extends State<MainScreen> {
     address.long = currentPosition.longitude;
     address.placeName = first.addressLine;
     Provider.of<AppData>(context, listen: false).updatePickupLocation(address);
+
     addressss = first.addressLine;
     print('addddd$addressss');
     return addressss;
+  }
+
+  Future<void> getPlaceDirection(BuildContext context) async {
+    AssistantMethods assistantMethods = AssistantMethods();
+    var initialPos =
+        Provider.of<AppData>(context, listen: false).pickupLocation;
+    var finalPos = Provider.of<AppData>(context, listen: false).dropoffLocation;
+
+    var pickUpLatLng = LatLng(initialPos.lat, initialPos.long);
+    var dropoffLatLng = LatLng(finalPos.lat, finalPos.long);
+    var details = await assistantMethods.placeDirectionDetails(
+        pickUpLatLng, dropoffLatLng);
+
+    print('pointsssss');
+    print(details.encodedPoints);
+    print(details.durationText);
+    print(details.durationValue);
   }
 
   @override
@@ -154,8 +173,13 @@ class _MainScreenState extends State<MainScreen> {
                     height: 10,
                   ),
                   InkWell(
-                    onTap: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (ctx) => PickUpScreen())),
+                    onTap: () async {
+                      var res = await Navigator.push(context,
+                          MaterialPageRoute(builder: (ctx) => PickUpScreen()));
+                      if (res == "from search screen") {
+                        await getPlaceDirection(context);
+                      }
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                           boxShadow: [
