@@ -120,29 +120,33 @@ class PredictionTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        child: Row(
-          children: [
-            Icon(Icons.add_location, color: Colors.white),
-            SizedBox(
-              width: 10,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  placePrediction.maintext,
-                  style: TextStyle(fontSize: 16),
-                ),
-                SizedBox(
-                  height: 3,
-                ),
-                Text(
-                  placePrediction.secondarytext,
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-              ],
-            )
-          ],
+        child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              Icon(Icons.add_location, color: Colors.white),
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    placePrediction.maintext,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(
+                    height: 3,
+                  ),
+                  Text(
+                    placePrediction.secondarytext,
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
