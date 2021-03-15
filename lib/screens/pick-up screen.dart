@@ -54,41 +54,60 @@ class _PickUpScreenState extends State<PickUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // String address = Provider.of<AppData>(context, listen: false)
-    //         .pickupLocation
-    //         .placeName ??
-    //     Provider.of<AppData>(context, listen: false).pickupLocation.placeName;
-    // pickUp.text = address == null ? "" : address;
+    String address =
+        Provider.of<AppData>(context, listen: false).pickupLocation.name ??
+            Provider.of<AppData>(context, listen: false).pickupLocation.name;
+    pickUp.text = address == null ? "" : address;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.black,
         body: SingleChildScrollView(
           child: Column(
             children: [
               Container(
+                decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.grey))),
                 height: 50,
-                child: Container(
-                  height: 40,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   child: Row(children: [
                     Icon(
                       Icons.arrow_back,
                     ),
-                    Text('Set Drop Off'),
+                    SizedBox(
+                      width: 60,
+                    ),
+                    Center(
+                      child:
+                          Text('Set Drop Off', style: TextStyle(fontSize: 22)),
+                    )
                   ]),
                 ),
               ),
               Column(
                 children: [
-                  TextField(
-                    controller: pickUp,
-                    decoration:
-                        InputDecoration(hintText: 'Enter Pick-up location'),
-                  ),
-                  TextField(
-                    onChanged: (value) {
-                      findPlace(value, context);
-                    },
-                    controller: dropOff,
-                    decoration: InputDecoration(hintText: 'Where To?'),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Container(
+                      child: Column(
+                        children: [
+                          TextField(
+                            controller: pickUp,
+                            decoration: InputDecoration(
+                                hintText: 'Enter Pick-up location'),
+                          ),
+                          TextField(
+                            onChanged: (value) {
+                              findPlace(value, context);
+                            },
+                            controller: dropOff,
+                            decoration: InputDecoration(hintText: 'Where To?'),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -99,7 +118,10 @@ class _PickUpScreenState extends State<PickUpScreen> {
                           shrinkWrap: true,
                           itemCount: placeData.length,
                           itemBuilder: (context, index) {
-                            return PredictionTile(placeData[index]);
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: PredictionTile(placeData[index]),
+                            );
                           },
                         )
                       : Container()

@@ -12,13 +12,15 @@ class WelcomeScreen extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             image: DecorationImage(
-                colorFilter: ColorFilter.mode(
-                  Colors.black45.withOpacity(0.5),
-                  BlendMode.dstATop,
-                ),
-                fit: BoxFit.cover,
-                image:
-                    AssetImage('assets/images/22816354520_e36b896c37_o.jpg'))),
+          colorFilter: ColorFilter.mode(
+            Colors.black45.withOpacity(0.5),
+            BlendMode.dstATop,
+          ),
+          fit: BoxFit.cover,
+          image: AssetImage(
+            'assets/images/22816354520_e36b896c37_o.jpg',
+          ),
+        )),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -34,7 +36,7 @@ class WelcomeScreen extends StatelessWidget {
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    'uber',
+                    'fasa7ni',
                     style: TextStyle(
                         fontSize: 40,
                         color: Colors.white,

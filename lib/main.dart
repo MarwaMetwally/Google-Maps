@@ -18,7 +18,7 @@ main() async {
 
 DatabaseReference userRef =
     FirebaseDatabase.instance.reference().child('users');
-//FirebaseAuth _auth = FirebaseAuth.instance;
+FirebaseAuth _auth = FirebaseAuth.instance;
 
 class MyApp extends StatelessWidget {
   @override
@@ -42,12 +42,13 @@ class MyApp extends StatelessWidget {
           SignUp.id: (ctx) => SignUp(),
           LogIn.id: (ctx) => LogIn(),
           MainScreen.id: (ctx) => MainScreen(),
-          // WelcomeScreen.id: (ctx) => WelcomeScreen(),
+          //  WelcomeScreen.id: (ctx) => WelcomeScreen(),
 
           // '/': (ctx) => WelcomeScreen()
         },
-        initialRoute: MainScreen.id,
-        // home: PickUpScreen(),
+        // initialRoute:
+        //     _auth.currentUser == null ? WelcomeScreen.id : MainScreen.id,
+        home: WelcomeScreen(),
         // home: StreamBuilder(
         //   stream: _auth.userChanges(),
         //   builder: (context, snapshot) {
